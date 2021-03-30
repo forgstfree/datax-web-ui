@@ -12,6 +12,7 @@ import Layout from '@/layout'
 // import tableRouter from './modules/table'
 // import nestedRouter from './modules/nested'
 import toolRouter from './modules/tool'
+import logsRouter from './modules/logs'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -261,6 +262,19 @@ export const asyncRoutes = [
     ]
   },
   toolRouter,
+  logsRouter,
+  {
+    path: '/er',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/er/index'),
+        name: 'ER',
+        meta: { title: '数据相似', icon: 'similar', affix: true }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 
