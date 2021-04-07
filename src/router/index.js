@@ -275,6 +275,18 @@ export const asyncRoutes = [
       }
     ]
   },
+  {
+    path: '/label',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/label/index'),
+        name: 'LABEL',
+        meta: { title: '数据标注', icon: 'similar', affix: true }
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

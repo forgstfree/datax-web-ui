@@ -15,6 +15,8 @@
 npm install [ 慢的话用  npm install --registry https://registry.npm.taobao.org]
 ```
 
+sudo npm install node-sass --unsafe-perm --save-dev
+
 修改配置
 
 找到 `vue.config.js` 修改 `proxy` 里的属性即可

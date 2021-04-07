@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      randomid: 'save-img' + Math.random().toString(36).slice(-8),
+      randomid: 'save-img-' + Math.random().toString(36).slice(-8),
       innerUrl: process.env.VUE_APP_BASE_URL + '/media/'
     }
   },
@@ -215,7 +215,7 @@ export default {
     }
 
     function zoomed() {
-      // vis.attr("transform", d3.event.transform);
+      // vis.attr('transform', d3.event.transform)
       vis.attr(
         'transform', // svg下的g标签移动大小
         'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')'
@@ -298,7 +298,6 @@ export default {
         .style('fill-opacity', '0.3')
         .style('fill', function(d) {
           // console.log(d,fill(d.group));
-
           return fill(d.group)
         })
         // eslint-disable-next-line no-unused-vars

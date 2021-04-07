@@ -29,39 +29,39 @@
 </template>
 
 <script>
-import { fetchList } from "@/api/logs";
-import Pagination from "@/components/Pagination";
+import { fetchList } from '@/api/logs'
+import Pagination from '@/components/Pagination'
 
 export default {
-  name: "home",
+  name: 'Home',
   components: { Pagination },
   data() {
     return {
-      input: "",
+      input: '',
       dataList: [],
       total: 0,
       page: {
         all: false,
         index: 1,
-        limit: 10,
-      },
-    };
+        limit: 10
+      }
+    }
   },
   created() {
-    this.showLogsList();
+    this.showLogsList()
   },
   methods: {
     showLogsList() {
-      console.log("getList");
+      console.log('getList')
       fetchList(this.page).then((response) => {
         // var res = JSON.parse(response.bodyText);
-        console.log(response);
-        this.dataList = response.items;
-        this.total = response.total;
-      });
-    },
-  },
-};
+        console.log(response)
+        this.dataList = response.items
+        this.total = response.total
+      })
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

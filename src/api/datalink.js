@@ -15,7 +15,7 @@ export function fetchList(query) {
     url: '/dataIntegration/getList/',
     method: 'get',
     params: query,
-    paramsSerializer: function (params) {
+    paramsSerializer: function(params) {
       return Qs.stringify(params, { arrayFormat: 'repeat' })
     }
   })

@@ -30,8 +30,8 @@ export default {
       fits: ['fill', 'contain', 'cover', 'none', 'scale-down'],
       logresult: ['result/CommonER.json', 'result/EnhanceER.json', 'result/25ubuntu_VWhlzfn.log.json'],
 
-      erurl: process.env.VUE_APP_BASE_URL + '/media/showsvg/ERa.svg',
-      noterurl: process.env.VUE_APP_BASE_URL + '/media/showsvg/ERb.svg'
+      erurl: 'http://10.9.21.4:13333/media/showsvg/ERa.svg',
+      noterurl: 'http://10.9.21.4:13333/media/showsvg/ERb.svg'
     }
   }
 }

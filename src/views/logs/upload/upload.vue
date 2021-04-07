@@ -5,7 +5,7 @@
       style="height: 300px"
       class="upload-demo"
       :data="dataObj"
-      :action="uploadurl"
+      action="http://10.9.21.4:13333/dblog/upload/"
       :multiple="false"
       :auto-upload="false"
       :before-upload="beforeUpload"
@@ -16,14 +16,14 @@
     <div>
       <el-input v-model="input1" placeholder="请输入内容">
         <template slot="prepend">文件名:</template>
-        <template slot="append">
-          <el-button
-            style="margin-left: 10px"
-            size="small"
-            type="success"
-            @click="submitUpload"
-          >上传到服务器</el-button>
-        </template>
+        <template
+          slot="append"
+        ><el-button
+          style="margin-left: 10px"
+          size="small"
+          type="success"
+          @click="submitUpload"
+        >上传到服务器</el-button></template>
       </el-input>
     </div>
     <el-input v-model="uploadtip" placeholder="文件未上传" clearable />
@@ -48,7 +48,6 @@ export default {
   },
   data() {
     return {
-      uploadurl: process.env.VUE_APP_BASE_URL + '/dblog/upload/',
       input1: '',
       isdisabled: false,
       uploadtip: '',
@@ -78,7 +77,7 @@ export default {
     uploadSuccess(response, file, fileList) {
       console.log('on-success')
       this.uploadtip = '文件已成功上传'
-      if (response['error_num'] === 0) {
+      if (response['error_num'] == 0) {
         this.isdisabled = false
         // this.uploadtip = '文件已成功上传,并分析完成。'
       } else {
