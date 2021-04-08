@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="5">
-        <div class="grid-content bg-purple">
+        <div class="grid-content ">
           <el-select v-model="currentvalue1" placeholder="请选择" @change="setCurrent1">
             <el-option
               v-for="item in tableData"
@@ -15,7 +15,7 @@
         <div>
           <el-slider v-model="valuerange1" range :max="100" /></div></el-col>
       <el-col :span="5">
-        <div class="grid-content bg-purple">
+        <div class="grid-content ">
           <el-select v-model="currentvalue2" placeholder="请选择" @change="setCurrent2">
             <el-option
               v-for="item in tableData"
@@ -28,7 +28,7 @@
         <div>
           <el-slider v-model="valuerange2" range :max="100" /></div></el-col>
       <el-col :span="4">
-        <div class="grid-content bg-purple">
+        <div class="grid-content ">
           <el-button
             type="success"
             icon="el-icon-check"
