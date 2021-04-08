@@ -18,12 +18,12 @@ export default {
       default: '100.json'
     },
     width: {
-      type: Number,
-      default: 50
+      type: String,
+      default: '50'
     },
     height: {
-      type: Number,
-      default: 50
+      type: String,
+      default: '50'
     }
   },
   data() {

@@ -39,12 +39,12 @@
     <el-row>
       <el-col :span="12">
         <div ref="graph" :style="{'margin-top': '10px', 'height':scrollerHeight}">
-          <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult1" :width="50" :height="100" />
+          <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult1" :width="90" :height="100" />
         </div>
       </el-col>
       <el-col :span="12">
         <div ref="graph" :style="{'margin-top': '10px', 'height':scrollerHeight}">
-          <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult2" :width="50" :height="100" />
+          <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult2" :width="90" :height="100" />
         </div>
       </el-col>
     </el-row>
