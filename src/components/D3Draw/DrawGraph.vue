@@ -1,6 +1,7 @@
 <template>
   <div :id="randomid" class="graph-container">
-    <svg id="save-img-svg" :style="{ height: height + 'px', width: width + 'px' }">
+    <!-- <svg id="save-img-svg" :style="{ height: height + 'px', width: width + 'px' }"> -->
+    <svg id="save-img-svg" :style="{width: width+'%', height: height+'%'}">
       <g id="save-img-svg-g" />
     </svg>
   </div>
@@ -18,11 +19,11 @@ export default {
     },
     width: {
       type: Number,
-      default: 1300
+      default: 50
     },
     height: {
       type: Number,
-      default: 600
+      default: 50
     }
   },
   data() {

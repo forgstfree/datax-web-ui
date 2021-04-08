@@ -261,7 +261,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  toolRouter,
+  // toolRouter,
   logsRouter,
   {
     path: '/er',

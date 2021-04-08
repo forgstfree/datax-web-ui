@@ -1,54 +1,52 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-row :gutter="20">
-      <el-col
-        :span="5"
-      ><div class="grid-content bg-purple">
-        <el-select v-model="currentvalue1" placeholder="请选择" @change="setCurrent1">
-          <el-option
-            v-for="item in tableData"
-            :key="item.pk"
-            :label="item.fields.name"
-            :value="item.fields.file"
-          />
-        </el-select></div></el-col>
-      <el-col
-        :span="5"
-      ><div>
-        <el-slider v-model="valuerange1" range :max="100" /></div></el-col>
-      <el-col
-        :span="5"
-      ><div class="grid-content bg-purple">
-        <el-select v-model="currentvalue2" placeholder="请选择" @change="setCurrent2">
-          <el-option
-            v-for="item in tableData"
-            :key="item.pk"
-            :label="item.fields.name"
-            :value="item.fields.file"
-          />
-        </el-select></div></el-col>
-      <el-col
-        :span="5"
-      ><div>
-        <el-slider v-model="valuerange2" range :max="100" /></div></el-col>
-      <el-col
-        :span="4"
-      ><div class="grid-content bg-purple">
-        <el-button
-          type="success"
-          icon="el-icon-check"
-          circle
-          @click="getLogJson()"
-        /></div></el-col>
+      <el-col :span="5">
+        <div class="grid-content bg-purple">
+          <el-select v-model="currentvalue1" placeholder="请选择" @change="setCurrent1">
+            <el-option
+              v-for="item in tableData"
+              :key="item.pk"
+              :label="item.fields.name"
+              :value="item.fields.file"
+            />
+          </el-select></div></el-col>
+      <el-col :span="5">
+        <div>
+          <el-slider v-model="valuerange1" range :max="100" /></div></el-col>
+      <el-col :span="5">
+        <div class="grid-content bg-purple">
+          <el-select v-model="currentvalue2" placeholder="请选择" @change="setCurrent2">
+            <el-option
+              v-for="item in tableData"
+              :key="item.pk"
+              :label="item.fields.name"
+              :value="item.fields.file"
+            />
+          </el-select></div></el-col>
+      <el-col :span="5">
+        <div>
+          <el-slider v-model="valuerange2" range :max="100" /></div></el-col>
+      <el-col :span="4">
+        <div class="grid-content bg-purple">
+          <el-button
+            type="success"
+            icon="el-icon-check"
+            circle
+            @click="getLogJson()"
+          /></div></el-col>
     </el-row>
     <el-row>
-      <el-col
-        :span="12"
-      ><div v-if="show" style="margin-top: 20px">
-        <DrawGraph :key="logresult1" :filename="logresult1" /></div></el-col>
       <el-col :span="12">
-        <div v-if="show" style="margin-top: 20px">
-          <DrawGraph :key="logresult2" :filename="logresult2" /></div></el-col>
+        <div ref="graph" :style="{'margin-top': '10px', 'height':scrollerHeight}">
+          <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult1" :width="50" :height="100" />
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div ref="graph" :style="{'margin-top': '10px', 'height':scrollerHeight}">
+          <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult2" :width="50" :height="100" />
+        </div>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -62,6 +60,7 @@ export default {
   data() {
     return {
       show: false,
+      refleshgraph: 1,
       currentfile1: '',
       currentfile2: '',
       tableData: [],
@@ -84,7 +83,12 @@ export default {
       }
     }
   },
-
+  computed: {
+    // 滚动区高度
+    scrollerHeight: function() {
+      return (window.innerHeight - 100) + 'px'
+    }
+  },
   mounted: function() {
     this.showLogsList()
   },
@@ -112,6 +116,7 @@ export default {
         analysisLog(this.params).then((response) => {
           this.logresult2 = response.jsonfiles[0]
           this.show = true
+          this.refleshgraph += 1
         })
       })
     }

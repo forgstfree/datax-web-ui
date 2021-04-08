@@ -1,29 +1,31 @@
 <template>
-  <div>
+  <div class="app-container">
     <el-row :gutter="20">
-      <el-col
-        :span="6"
-      ><div class="grid-content bg-purple">
-        <el-select v-model="value" placeholder="请选择" @change="setCurrent">
-          <el-option
-            v-for="item in tableData"
-            :key="item.pk"
-            :label="item.fields.name"
-            :value="item.fields.file"
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <el-select v-model="value" placeholder="请选择" @change="setCurrent">
+            <el-option
+              v-for="item in tableData"
+              :key="item.pk"
+              :label="item.fields.name"
+              :value="item.fields.file"
+            />
+          </el-select>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple">
+          <el-button
+            type="success"
+            icon="el-icon-check"
+            circle
+            @click="getLogJson()"
           />
-        </el-select></div></el-col>
-      <el-col
-        :span="6"
-      ><div class="grid-content bg-purple">
-        <el-button
-          type="success"
-          icon="el-icon-check"
-          circle
-          @click="getLogJson()"
-        /></div></el-col>
+        </div>
+      </el-col>
     </el-row>
-    <div v-if="show" style="margin-top: 20px" class="height:100% width=100%">
-      <DrawGraph :filename="logresult" />
+    <div ref="graph" :style="{'margin-top': '10px', 'height':scrollerHeight}">
+      <DrawGraph v-if="show" :key="refleshgraph" :filename="logresult" :width="100" :height="100" />
     </div>
   </div>
 </template>
@@ -37,6 +39,7 @@ export default {
   data() {
     return {
       show: false,
+      refleshgraph: 1,
       tableData: [],
       logresult: '',
       page: {
@@ -50,6 +53,12 @@ export default {
         linenum: '100'
       },
       value: ''
+    }
+  },
+  computed: {
+    // 滚动区高度
+    scrollerHeight: function() {
+      return (window.innerHeight - 100) + 'px'
     }
   },
 
@@ -73,6 +82,7 @@ export default {
         console.log(response)
         this.logresult = response.jsonfiles[0]
         this.show = true
+        this.refleshgraph += 1
       })
     }
   }
