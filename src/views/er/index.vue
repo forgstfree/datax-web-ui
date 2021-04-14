@@ -1,36 +1,21 @@
 <template>
-  <div id="sample">
+  <div id="sample" class="app-container">
     <el-row :gutter="20">
-      <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-select
-            v-model="currentvalue1"
-            placeholder="请选择"
-            @change="setCurrent1"
-          >
-            <el-option
-              v-for="item in tableData"
-              :key="item.pk"
-              :label="item.fields.name"
-              :value="item.fields.file"
-            />
-          </el-select></div></el-col>
-      <el-col :span="5">
-        <div class="grid-content bg-purple">
-          <el-select
-            v-model="currentvalue2"
-            placeholder="请选择"
-            @change="setCurrent2"
-          >
-            <el-option
-              v-for="item in tableData"
-              :key="item.pk"
-              :label="item.fields.name"
-              :value="item.fields.file"
-            />
-          </el-select></div></el-col>
+      <el-col :span="8">
+        <div class="grid-content ">
+          <Reader ref="readerone" />
+        </div></el-col>
+      <el-col :span="8">
+        <div class="grid-content ">
+          <Reader ref="readertwo" />
+        </div></el-col>
       <el-col :span="4">
-        <div class="grid-content bg-purple">
+        <div class="gird-content" style="margin-top: 8px">
+          <el-checkbox v-model="checkedcon">约束</el-checkbox>
+          <el-checkbox v-model="checkedins">实例</el-checkbox>
+          <div /></div></el-col>
+      <el-col :span="4">
+        <div class="grid-content ">
           <el-button
             type="success"
             icon="el-icon-check"
@@ -38,21 +23,22 @@
             @click="getLogJson()"
           /></div></el-col>
     </el-row>
-    <div id="displays" style="width: 100%; white-space: nowrap margin: 5px">
+    <div id="displays" style="width: 100%; white-space: nowrap; ">
       <div
         id="myDiagramDiv"
         style="
           border: solid 1px black;
-          height: 560px;
+          height: 590px;
           display: inline-block;
           vertical-align: top;
-          width: 70%;
+          width: 100%;
         "
       />
     </div>
   </div>
 </template>
 <script>
+import Reader from './reader'
 import go from 'gojs'
 var $ = go.GraphObject.make // for conciseness in defining templates
 function getInfo(model, obj) {
@@ -137,8 +123,11 @@ function getInfo(model, obj) {
   return text
 }
 export default {
+  components: { Reader },
   data() {
     return {
+      checkedcon: false,
+      checkedins: false,
       myDiagram: '',
       nodeDataArray: [],
       linkDataArray: []
