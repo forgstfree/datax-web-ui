@@ -11,7 +11,7 @@
         </div></el-col>
       <el-col :span="4">
         <div class="gird-content" style="margin-top: 8px">
-          <el-checkbox v-model="checkedcon">约束</el-checkbox>
+          <el-checkbox v-model="checkedcon">属性</el-checkbox>
           <el-checkbox v-model="checkedins">实例</el-checkbox>
           <div /></div></el-col>
       <el-col :span="4">
@@ -20,7 +20,7 @@
             type="success"
             icon="el-icon-check"
             circle
-            @click="getLogJson()"
+            @click="load"
           /></div></el-col>
     </el-row>
     <div id="displays" style="width: 100%; white-space: nowrap; ">
@@ -35,11 +35,26 @@
         "
       />
     </div>
+    <el-button type="primary" icon="el-icon-edit" @click="load">load</el-button>
+    <el-button type="primary" @click="save">save<i class="el-icon-upload el-icon--right" /></el-button>
+    <el-input v-model="modelName" placeholder="请输入名字" />
+    <div>
+      Diagram Model saved in JSON format, automatically updated after each
+      change or undo or redo:
+      <el-input
+        v-model="mySavedModel"
+        type="textarea"
+        :autosize="{ minRows: 4, maxRows: 8}"
+        placeholder="请输入内容"
+        style="width:100%;"
+      />
+    </div>
   </div>
 </template>
 <script>
 import Reader from './reader'
 import go from 'gojs'
+import { fetchGojsData, createGojsData } from '@/api/ersim'
 var $ = go.GraphObject.make // for conciseness in defining templates
 function getInfo(model, obj) {
   var x = obj.panel.adornedPart // the object that the mouse is over
@@ -126,6 +141,10 @@ export default {
   components: { Reader },
   data() {
     return {
+      temp: {},
+      mySavedModel: '',
+      modelName: '',
+      mySavedModelID: 0,
       checkedcon: false,
       checkedins: false,
       myDiagram: '',
@@ -144,6 +163,43 @@ export default {
     this.init()
   },
   methods: {
+    createData() {
+      this.temp.name = this.modelName
+      this.temp.data = this.mySavedModel
+      createGojsData(this.temp).then((response) => {
+        this.$notify({
+          title: 'Success',
+          message: 'Created Successfully',
+          type: 'success',
+          duration: 2000 })
+      })
+    },
+    // Show the diagram's model in JSON format
+    save() {
+      this.mySavedModel = this.myDiagram.model.toJson()
+      this.myDiagram.isModified = false
+      this.createData()
+    },
+    load() {
+      if (this.mySavedModelID >= 7) { this.mySavedModelID = 0 } else { this.mySavedModelID += 2 }
+      console.log(this.mySavedModelID)
+      fetchGojsData(this.mySavedModelID).then((response) => {
+        this.mySavedModel = response.data[0].fields.data
+        console.log(this.mySavedModel)
+        this.myDiagram.model = go.Model.fromJson(this.mySavedModel)
+        this.$notify({
+          title: 'Success',
+          message: 'Return Successfully',
+          type: 'success',
+          duration: 2000 })
+      })
+    },
+    showModel() {
+      this.mySavedModel = this.myDiagram.model.toJson()
+    },
+    layout() {
+      this.myDiagram.layoutDiagram(true)
+    },
     init() {
       // This template is a Panel that is used to represent each item in a Panel.itemArray.
       // The Panel is data bound to the item object.
@@ -256,18 +312,18 @@ export default {
               scale: 1
             })
           ),
-          routing: go.Link.Normal,
-          curve: go.Link.Bezier,
+          routing: go.Link.Orthogonal,
+          corner: 5,
           toShortLength: 2
         },
         $(
           go.Shape, //  the link shape
           { name: 'OBJSHAPE' }
         ),
-        $(
-          go.Shape, //  the arrowhead
-          { name: 'ARWSHAPE', toArrow: 'Standard' }
-        ),
+        // $(
+        //   go.Shape, //  the arrowhead
+        //   { name: 'ARWSHAPE', toArrow: 'Standard' }
+        // ),
         {
           //  define a tooltip for each link that displays its information
           toolTip: $(
@@ -368,140 +424,8 @@ export default {
         copiesArrayObjects: true,
         linkFromPortIdProperty: 'fromPort',
         linkToPortIdProperty: 'toPort',
-        nodeDataArray: [
-          {
-            key: 'Table1',
-            fields: [
-              { name: 'field1', info: '', color: '#F7B84B', figure: 'Ellipse' },
-              {
-                name: 'field2',
-                info: 'the second one',
-                color: '#F25022',
-                figure: 'Ellipse'
-              },
-              { name: 'fieldThree', info: '3rd', color: '#00BCF2' }
-            ],
-            loc: '0 0'
-          },
-          {
-            key: 'Table2',
-            fields: [
-              { name: 'fieldA', info: '', color: '#FFB900', figure: 'Diamond' },
-              {
-                name: 'fieldB',
-                info: '',
-                color: '#F25022',
-                figure: 'Rectangle'
-              },
-              { name: 'fieldC', info: '', color: '#7FBA00', figure: 'Diamond' },
-              {
-                name: 'fieldD',
-                info: 'fourth',
-                color: '#00BCF2',
-                figure: 'Rectangle'
-              }
-            ],
-            loc: '280 0'
-          },
-          {
-            key: 'Table3',
-            fields: [
-              { name: 'field1', info: '', color: '#F7B84B', figure: 'Ellipse' },
-              {
-                name: 'field2',
-                info: 'the second one',
-                color: '#F25022',
-                figure: 'Ellipse'
-              },
-              { name: 'fieldThree', info: '3rd', color: '#00BCF2' }
-            ],
-            loc: '320 50'
-          },
-          {
-            key: 'Table4',
-            fields: [
-              { name: 'field1', info: '', color: '#F7B84B', figure: 'Ellipse' },
-              {
-                name: 'field2',
-                info: 'the second one',
-                color: '#F25022',
-                figure: 'Ellipse'
-              },
-              { name: 'fieldThree', info: '3rd', color: '#00BCF2' }
-            ],
-            loc: '520 50'
-          },
-          {
-            key: 'Table5',
-            fields: [
-              { name: 'field1', info: '', color: '#F7B84B', figure: 'Ellipse' },
-              {
-                name: 'field2',
-                info: 'the second one',
-                color: '#F25022',
-                figure: 'Ellipse'
-              },
-              { name: 'fieldThree', info: '3rd', color: '#00BCF2' }
-            ],
-            loc: '820 50'
-          }
-        ],
-        linkDataArray: [
-          {
-            from: 'Table1',
-            fromPort: 'field1',
-            to: 'Table2',
-            toPort: 'fieldA'
-          },
-          {
-            from: 'Table1',
-            fromPort: 'field2',
-            to: 'Table2',
-            toPort: 'fieldD'
-          },
-          {
-            from: 'Table1',
-            fromPort: 'fieldThree',
-            to: 'Table2',
-            toPort: 'fieldB'
-          },
-          {
-            from: 'Table3',
-            fromPort: 'field1',
-            to: 'Table2',
-            toPort: 'fieldA'
-          },
-          {
-            from: 'Table4',
-            fromPort: 'field2',
-            to: 'Table2',
-            toPort: 'fieldD'
-          },
-          {
-            from: 'Table5',
-            fromPort: 'fieldThree',
-            to: 'Table2',
-            toPort: 'fieldB'
-          },
-          {
-            from: 'Table1',
-            fromPort: 'field1',
-            to: 'Table3',
-            toPort: 'field1'
-          },
-          {
-            from: 'Table1',
-            fromPort: 'field2',
-            to: 'Table5',
-            toPort: 'field2'
-          },
-          {
-            from: 'Table3',
-            fromPort: 'fieldThree',
-            to: 'Table4',
-            toPort: 'field1'
-          }
-        ]
+        nodeDataArray: [],
+        linkDataArray: []
       })
 
       // whenever selection changes, run updateHighlights
