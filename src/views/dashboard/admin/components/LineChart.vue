@@ -16,11 +16,11 @@ export default {
     },
     width: {
       type: String,
-      default: '100%'
+      default: '95%'
     },
     height: {
       type: String,
-      default: '350px'
+      default: '330px'
     },
     autoResize: {
       type: Boolean,
@@ -79,7 +79,7 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          axisPointer: {
+          axisPointer: { // 坐标轴指示器，坐标轴触发有效
             type: 'cross'
           },
           padding: [5, 10]

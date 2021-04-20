@@ -20,7 +20,7 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '500px'
     }
   },
   data() {
@@ -52,21 +52,24 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['mysql', 'oracle', 'postgresql', 'sqlserver', 'hive', 'hbase', 'mongondb', 'clickhouse']
         },
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '',
             type: 'pie',
             roseType: 'radius',
-            radius: [15, 95],
+            radius: [20, 100],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'Industries' },
-              { value: 240, name: 'Technology' },
-              { value: 149, name: 'Forex' },
-              { value: 100, name: 'Gold' },
-              { value: 59, name: 'Forecasts' }
+              { value: 320, name: 'mysql' },
+              { value: 240, name: 'oracle' },
+              { value: 200, name: 'mongondb' },
+              { value: 149, name: 'postgresql' },
+              { value: 100, name: 'sqlserver' },
+              { value: 80, name: 'hbase' },
+              { value: 59, name: 'hive' },
+              { value: 39, name: 'clickhouse' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

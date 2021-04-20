@@ -1,42 +1,30 @@
 <template>
   <div class="dashboard-editor-container">
-    <!--<github-corner class="github-corner" />-->
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
-
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+    <el-row :gutter="18" style="margin-bottom:32px;">
+      <el-col :xs="{span: 48}" :sm="{span: 36}" :md="{span: 36}" :lg="{span: 18}" :xl="{span: 18}">
+        <panel-group @handleSetLineChartData="handleSetLineChartData" />
+        <el-row style="background:#fff;padding:16px 16px 0;">
+          <line-chart :chart-data="lineChartData" />
+        </el-row>
+      </el-col>
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}">
+        <box-card />
+      </el-col>
     </el-row>
 
     <el-row :gutter="32">
-      <!--<el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>-->
-      <!--<el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <pie-chart />
         </div>
-      </el-col>-->
-      <!--<el-col :xs="24" :sm="24" :lg="8">
+      </el-col>
+      <el-col :xs="{span: 46}" :sm="{span: 34}" :md="{span: 34}" :lg="{span: 16}" :xl="{span: 16}">
         <div class="chart-wrapper">
-          <bar-chart />
+          <bar-chart :chart-data="barChartData"/>
         </div>
-      </el-col>-->
+      </el-col>
     </el-row>
-
-    <!--<el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <todo-list />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <box-card />
-      </el-col>
-    </el-row>-->
   </div>
 </template>
 
@@ -44,12 +32,12 @@
 // import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
-// import RaddarChart from './components/RaddarChart'
-// import PieChart from './components/PieChart'
-// import BarChart from './components/BarChart'
-// import TransactionTable from './components/TransactionTable'
-// import TodoList from './components/TodoList'
-// import BoxCard from './components/BoxCard'
+import RaddarChart from './components/RaddarChart'
+import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
+import TransactionTable from './components/TransactionTable'
+import TodoList from './components/TodoList'
+import BoxCard from './components/BoxCard'
 import * as dashborad from '@/api/dashborad'
 
 const lineChartData = {
@@ -63,19 +51,20 @@ const lineChartData = {
 export default {
   name: 'DashboardAdmin',
   components: {
-    // GithubCorner,
+    //GithubCorner,
     PanelGroup,
-    LineChart
-    // RaddarChart,
-    // PieChart,
-    // BarChart,
-    // TransactionTable,
-    // TodoList,
-    // BoxCard
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart,
+    TransactionTable,
+    TodoList,
+    BoxCard
   },
   data() {
     return {
-      lineChartData: lineChartData.chartInfo
+      lineChartData: lineChartData.chartInfo,
+      barChartData: lineChartData.chartInfo
     }
   },
   created() {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{height:height,width:width}"></div>
 </template>
 
 <script>
@@ -18,11 +18,15 @@ export default {
     },
     width: {
       type: String,
-      default: '100%'
+      default: '85%'
     },
     height: {
       type: String,
-      default: '300px'
+      default: '500px'
+    },
+    chartData: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -45,7 +49,10 @@ export default {
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
+      this.setOptions(this.chartData)
+      console.log(this.chartData)
+    },
+    setOptions({ dayList } = {}) {
       this.chart.setOption({
         tooltip: {
           trigger: 'axis',
@@ -62,38 +69,29 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: dayList,
           axisTick: {
-            alignWithLabel: true
+            alignWithLabel: false
           }
         }],
         yAxis: [{
           type: 'value',
           axisTick: {
-            show: false
+            show: true
           }
         }],
         series: [{
-          name: 'pageA',
+          name: 'jobProject',
           type: 'bar',
           stack: 'vistors',
-          barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageB',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
-          animationDuration
-        }, {
-          name: 'pageC',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
-          animationDuration
+          barWidth: '40%',
+          data: [10, 5, 13, 4],
+          animationDuration,
+          itemStyle: {
+            normal: {
+              color: '#33aafa'
+            }
+          }
         }]
       })
     }

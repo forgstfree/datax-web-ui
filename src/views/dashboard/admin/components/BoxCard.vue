@@ -4,23 +4,20 @@
       <img src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png">
     </div>
     <div style="position:relative;">
-      <pan-thumb :image="avatar" class="panThumb" />
-      <mallki class-name="mallki-text" text="vue-element-admin" />
+      <el-row>
+        <pan-thumb class="panThumb"/>
+      </el-row>
+      <el-row>
+        <el-divider></el-divider>
+      </el-row>
+<!--      <mallki class-name="mallki-text" text="vue-element-admin" />-->
       <div style="padding-top:35px;" class="progress-item">
-        <span>Vue</span>
+        <span>总任务成功率</span>
         <el-progress :percentage="70" />
       </div>
-      <div class="progress-item">
-        <span>JavaScript</span>
-        <el-progress :percentage="18" />
-      </div>
-      <div class="progress-item">
-        <span>Css</span>
-        <el-progress :percentage="12" />
-      </div>
-      <div class="progress-item">
-        <span>ESLint</span>
-        <el-progress :percentage="100" status="success" />
+      <div style="padding-top:35px;" class="progress-item">
+        <span>今日任务成功率</span>
+        <el-progress :percentage="90" />
       </div>
     </div>
   </el-card>
@@ -63,6 +60,8 @@ export default {
 
 <style lang="scss" >
 .box-card-component{
+  margin-top: 20px;
+  height: 483px;
   .el-card__header {
     padding: 0px!important;
   }
@@ -98,7 +97,8 @@ export default {
     top: -45px;
     left: 0px;
     border: 5px solid #ffffff;
-    background-color: #fff;
+    background-color: #ff48e2;
+    background-image: url(../../../../../public/avatar.gif);
     margin: auto;
     box-shadow: none!important;
     /deep/ .pan-info {
