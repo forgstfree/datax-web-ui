@@ -7,11 +7,11 @@
         </div></el-col>
       <el-col :span="8">
         <div class="grid-content ">
-          <Reader ref="readertwo" />
+          <Writer ref="writer" />
         </div></el-col>
       <el-col :span="4">
         <div class="gird-content" style="margin-top: 8px">
-          <el-checkbox v-model="checkedcon">属性</el-checkbox>
+          <el-checkbox v-model="checkedatt">属性</el-checkbox>
           <el-checkbox v-model="checkedins">实例</el-checkbox>
           <div /></div></el-col>
       <el-col :span="4">
@@ -53,6 +53,7 @@
 </template>
 <script>
 import Reader from './reader'
+import Writer from './writer'
 import go from 'gojs'
 import { fetchGojsData, createGojsData } from '@/api/ersim'
 var $ = go.GraphObject.make // for conciseness in defining templates
@@ -138,14 +139,14 @@ function getInfo(model, obj) {
   return text
 }
 export default {
-  components: { Reader },
+  components: { Reader, Writer },
   data() {
     return {
       temp: {},
       mySavedModel: '',
       modelName: '',
-      mySavedModelID: 0,
-      checkedcon: false,
+      mySavedModelID: 2,
+      checkedatt: false,
       checkedins: false,
       myDiagram: '',
       nodeDataArray: [],
@@ -181,18 +182,25 @@ export default {
       this.createData()
     },
     load() {
-      if (this.mySavedModelID >= 7) { this.mySavedModelID = 0 } else { this.mySavedModelID += 2 }
-      console.log(this.mySavedModelID)
-      fetchGojsData(this.mySavedModelID).then((response) => {
-        this.mySavedModel = response.data[0].fields.data
-        console.log(this.mySavedModel)
-        this.myDiagram.model = go.Model.fromJson(this.mySavedModel)
-        this.$notify({
-          title: 'Success',
-          message: 'Return Successfully',
-          type: 'success',
-          duration: 2000 })
-      })
+      const readerDataone = this.$refs.readerone.getData()
+      const readerDatatwo = this.$refs.writer.getData()
+      if ((readerDataone.datasourceId === undefined) || (readerDatatwo.datasourceId === undefined) || !(this.checkedatt || this.checkedins)) {
+        this.$notify.error({
+          title: '错误',
+          message: '请正确选择对比条件'
+        })
+      } else {
+        if (this.mySavedModelID > 8) { this.mySavedModelID = 2 } else { this.mySavedModelID += 1 }
+        fetchGojsData(this.mySavedModelID).then((response) => {
+          this.mySavedModel = response.data[0].fields.data
+          this.myDiagram.model = go.Model.fromJson(this.mySavedModel)
+          this.$notify({
+            title: 'Success',
+            message: 'Return Successfully',
+            type: 'success',
+            duration: 2000 })
+        })
+      }
     },
     showModel() {
       this.mySavedModel = this.myDiagram.model.toJson()

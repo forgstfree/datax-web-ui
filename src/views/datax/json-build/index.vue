@@ -189,6 +189,8 @@ export default {
     buildJson() {
       const readerData = this.$refs.reader.getData()
       const writeData = this.$refs.writer.getData()
+      console.log(readerData)
+      console.log(writeData)
       const readerColumns = this.$refs.mapper.getLColumns()
       const writerColumns = this.$refs.mapper.getRColumns()
       const hiveReader = {

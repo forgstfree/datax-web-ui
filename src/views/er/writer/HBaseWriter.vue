@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <el-form label-position="right" label-width="120px" :model="readerForm" :rules="rules">
-      <el-form-item label="数据库源：" prop="datasourceId">
-        <el-select v-model="readerForm.datasourceId" filterable style="width: 300px" @change="rDsChange">
+    <el-form label-position="left" label-width="105px" :model="readerForm" :rules="rules">
+      <el-form-item label="数据源" prop="datasourceId">
+        <el-select v-model="readerForm.datasourceId" filterable @change="rDsChange">
           <el-option
             v-for="item in rDsList"
             :key="item.id"
@@ -11,42 +11,40 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item v-show="dataSource==='postgresql' || dataSource==='oracle' ||dataSource==='sqlserver'" label="Schema：" prop="tableSchema">
-        <el-select v-model="readerForm.tableSchema" allow-create default-first-option filterable style="width: 300px" @change="schemaChange">
-          <el-option
-            v-for="item in schemaList"
-            :key="item"
-            :label="item"
-            :value="item"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="数据库表名：" prop="tableName">
-        <el-select v-model="readerForm.tableName" allow-create default-first-option filterable style="width: 300px" @change="rTbChange">
+      <el-form-item label="表" prop="tableName">
+        <el-select v-model="readerForm.tableName" filterable @change="rTbChange">
           <el-option v-for="item in rTbList" :key="item" :label="item" :value="item" />
         </el-select>
       </el-form-item>
-      <el-form-item label="SQL语句：">
-        <el-input v-model="readerForm.querySql" :autosize="{ minRows: 3, maxRows: 20}" type="textarea" placeholder="sql查询，一般用于多表关联查询时才用" style="width: 42%" />
-        <el-button type="primary" @click.prevent="getColumns('reader')">解析字段</el-button>
+      <el-form-item label="mode" prop="mode">
+        <el-select v-model="readerForm.mode" placeholder="读取hbase的模式">
+          <el-option v-for="item in modeTypes" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="切分字段：">
-        <el-input v-model="readerForm.splitPk" placeholder="切分主键" style="width: 13%" />
+      <el-form-item label="maxVersion">
+        <el-input v-model="readerForm.maxVersion" placeholder="多版本模式下读取的版本数,取值只能为－1或者大于1的数字" style="width: 50%" />
       </el-form-item>
-      <el-form-item label="表所有字段：">
+      <el-form-item label="range">
+        <el-input v-model="readerForm.range.startRowkey" placeholder="startRowkey指定开始rowkey" style="width: 50%" />
+      </el-form-item>
+      <el-form-item>
+        <el-input v-model="readerForm.range.endRowkey" placeholder="endRowkey指定结束rowkey" style="width: 50%" />
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="readerForm.range.isBinaryRowkey" placeholder="转换方式">
+          <el-option v-for="item in binaryRowkeyTypes" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="字段">
         <el-checkbox
           v-model="readerForm.checkAll"
           :indeterminate="readerForm.isIndeterminate"
           @change="rHandleCheckAllChange"
-        >全选
-        </el-checkbox>
+        >全选</el-checkbox>
         <div style="margin: 15px 0;" />
         <el-checkbox-group v-model="readerForm.columns" @change="rHandleCheckedChange">
           <el-checkbox v-for="c in rColumnList" :key="c" :label="c">{{ c }}</el-checkbox>
         </el-checkbox-group>
-      </el-form-item>
-      <el-form-item label="where条件：" prop="where">
-        <el-input v-model="readerForm.where" placeholder="where条件，不需要再加where" type="textarea" style="width: 42%" />
       </el-form-item>
     </el-form>
   </div>
@@ -55,20 +53,18 @@
 <script>
 import * as dsQueryApi from '@/api/metadata-query'
 import { list as jdbcDsList } from '@/api/datax-jdbcDatasource'
-import Bus from '../busReader'
+import Bus from '../busWriter'
 
 export default {
-  name: 'RDBMSReader',
+  name: 'HBaseReader',
   data() {
     return {
       jdbcDsQuery: {
         current: 1,
-        size: 200,
-        ascs: 'datasource_name'
+        size: 200
       },
       rDsList: [],
       rTbList: [],
-      schemaList: [],
       rColumnList: [],
       loading: false,
       active: 1,
@@ -80,27 +76,34 @@ export default {
         datasourceId: undefined,
         tableName: '',
         columns: [],
-        where: '',
-        querySql: '',
         checkAll: false,
         isIndeterminate: true,
-        splitPk: '',
-        tableSchema: ''
+        mode: '',
+        maxVersion: '',
+        range: {
+          startRowkey: '',
+          endRowkey: '',
+          isBinaryRowkey: ''
+        }
       },
+      modeTypes: [
+        { value: 'normal', label: 'normal' },
+        { value: 'multiVersionFixedColumn', label: 'multiVersionFixedColumn' }
+      ],
+      binaryRowkeyTypes: [
+        { value: 'true', label: '调用Bytes.toBytesBinary(rowkey)' },
+        { value: 'false', label: '调用Bytes.toBytes(rowkey)' }
+      ],
       rules: {
-        datasourceId: [{ required: true, message: 'this is required', trigger: 'change' }],
-        tableName: [{ required: true, message: 'this is required', trigger: 'change' }],
-        tableSchema: [{ required: true, message: 'this is required', trigger: 'change' }]
+        mode: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        datasourceId: [{ required: true, message: 'this is required', trigger: 'blur' }],
+        tableName: [{ required: true, message: 'this is required', trigger: 'blur' }]
       }
     }
   },
   watch: {
     'readerForm.datasourceId': function(oldVal, newVal) {
-      if (this.dataSource === 'postgresql' || this.dataSource === 'oracle' || this.dataSource === 'sqlserver') {
-        this.getSchema()
-      } else {
-        this.getTables('rdbmsReader')
-      }
+      this.getTables('hbaseReader')
     }
   },
   created() {
@@ -108,7 +111,7 @@ export default {
   },
   methods: {
     // 获取可用数据源
-    getJdbcDs(type) {
+    getJdbcDs() {
       this.loading = true
       jdbcDsList(this.jdbcDsQuery).then(response => {
         const { records } = response
@@ -118,39 +121,15 @@ export default {
     },
     // 获取表名
     getTables(type) {
-      if (type === 'rdbmsReader') {
-        let obj = {}
-        if (this.dataSource === 'postgresql' || this.dataSource === 'oracle' || this.dataSource === 'sqlserver') {
-          obj = {
-            datasourceId: this.readerForm.datasourceId,
-            tableSchema: this.readerForm.tableSchema
-          }
-        } else {
-          obj = {
-            datasourceId: this.readerForm.datasourceId
-          }
+      if (type === 'hbaseReader') {
+        const obj = {
+          datasourceId: this.readerForm.datasourceId
         }
         // 组装
         dsQueryApi.getTables(obj).then(response => {
-          if (response) {
-            this.rTbList = response
-          }
+          this.rTbList = response
         })
       }
-    },
-    getSchema() {
-      const obj = {
-        datasourceId: this.readerForm.datasourceId
-      }
-      dsQueryApi.getTableSchema(obj).then(response => {
-        this.schemaList = response
-      })
-    },
-    // schema 切换
-    schemaChange(e) {
-      this.readerForm.tableSchema = e
-      // 获取可用表
-      this.getTables('rdbmsReader')
     },
     // reader 数据源切换
     rDsChange(e) {
@@ -164,6 +143,8 @@ export default {
       })
       Bus.dataSourceId = e
       this.$emit('selectDataSource', this.dataSource)
+      // 获取可用表
+      this.getTables('reader')
     },
     getTableColumns() {
       const obj = {
@@ -192,11 +173,7 @@ export default {
     // 获取表字段
     getColumns(type) {
       if (type === 'reader') {
-        if (this.readerForm.querySql !== '') {
-          this.getColumnsByQuerySql()
-        } else {
-          this.getTableColumns()
-        }
+        this.getTableColumns()
       }
     },
     // 表切换
@@ -217,7 +194,6 @@ export default {
     },
     getData() {
       if (Bus.dataSourceId) {
-        console.log(Bus, 'read Bus')
         this.readerForm.datasourceId = Bus.dataSourceId
       }
       return this.readerForm
