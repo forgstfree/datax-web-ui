@@ -36,6 +36,9 @@
           <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row)">
             删除
           </el-button>
+          <el-button type="info" size="mini" @click="resouceMonitoring">
+            资源
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -222,6 +225,9 @@ export default {
         this.pluginData = response
         this.dialogPvVisible = true
       })
+    },
+    resouceMonitoring() {
+      this.$router.push({ path: '/datax/registry/registry' })
     }
   }
 }

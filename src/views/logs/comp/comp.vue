@@ -1,7 +1,10 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <el-col :span="5">
+      <el-col :span="3">
+        <div class="grid-content bg-purple">日志数据源</div>
+      </el-col>
+      <el-col :span="3">
         <div class="grid-content ">
           <el-select v-model="currentvalue1" placeholder="请选择" @change="setCurrent1">
             <el-option
@@ -11,10 +14,14 @@
               :value="item.fields.file"
             />
           </el-select></div></el-col>
-      <el-col :span="5">
+      <el-col :span="4">
         <div>
           <el-slider v-model="valuerange1" range :max="100" /></div></el-col>
-      <el-col :span="5">
+
+      <el-col :span="3">
+        <div class="grid-content bg-purple">日志数据源</div>
+      </el-col>
+      <el-col :span="3">
         <div class="grid-content ">
           <el-select v-model="currentvalue2" placeholder="请选择" @change="setCurrent2">
             <el-option
@@ -24,7 +31,7 @@
               :value="item.fields.file"
             />
           </el-select></div></el-col>
-      <el-col :span="5">
+      <el-col :span="4">
         <div>
           <el-slider v-model="valuerange2" range :max="100" /></div></el-col>
       <el-col :span="4">

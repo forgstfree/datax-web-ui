@@ -181,6 +181,7 @@ export const asyncRoutes = [
       {
         path: 'jobTemplate',
         name: 'JobTemplate',
+        hidden: true,
         component: () => import('@/views/datax/jobTemplate/index'),
         meta: { title: 'DataX任务模板', icon: 'task-tmp' }
       }
@@ -206,13 +207,13 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/datax/jobLog',
     name: 'log',
-    meta: { title: '日志管理', icon: 'work' },
+    meta: { title: '任务日志管理', icon: 'work' },
     children: [
       {
         path: 'jobLog',
         name: 'JobLog',
         component: () => import('@/views/datax/jobLog/index'),
-        meta: { title: '日志管理', icon: 'log' }
+        meta: { title: '任务日志管理', icon: 'log' }
       }
     ]
   },
@@ -251,6 +252,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/datax/registry',
     name: 'registry',
+    hidden: true,
     meta: { title: '资源监控', icon: 'work' },
     children: [
       {

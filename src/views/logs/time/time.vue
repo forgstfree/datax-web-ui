@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
+      <el-col :span="4">
+        <div class="grid-content bg-purple">日志数据源</div>
+      </el-col>
       <el-col :span="6">
         <div class="grid-content ">
           <el-select v-model="value" placeholder="请选择" @change="setCurrent">

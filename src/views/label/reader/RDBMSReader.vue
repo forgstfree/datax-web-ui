@@ -40,11 +40,11 @@
       </el-col>
     </el-row>
     <el-table :data="columns" style="width: 100%">
-      <el-table-column label="表所有字段">
-        <el-table-column prop="name" label="字段名" width="100" />
-        <el-table-column prop="tags" label="标签">
-          <template>
-            <DataTag :dynamic-tags="dataTags.table" />
+      <el-table-column label="表所有字段" align="center">
+        <el-table-column prop="name" label="字段名" width="100" align="center" />
+        <el-table-column prop="tags" label="标签" align="center">
+          <template slot-scope="{ row }">
+            <DataTag :dynamic-tags="row.tags" />
           </template>
         </el-table-column>
       </el-table-column>
@@ -79,8 +79,7 @@ export default {
     return {
       dataTags: {
         database: ['数据库'],
-        table: ['表'],
-        columns: {}
+        table: ['表']
       },
       columns: [],
       jdbcDsQuery: {
@@ -219,7 +218,7 @@ export default {
           this.rColumnList.forEach((item) => {
             const gobj = {
               name: item,
-              tags: []
+              tags: [item]
             }
             this.columns.push(gobj)
           })

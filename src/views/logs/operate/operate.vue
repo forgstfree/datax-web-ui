@@ -1,6 +1,9 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="20">
+    <el-row :gutter="4">
+      <el-col :span="4">
+        <div class="grid-content bg-purple">日志数据源</div>
+      </el-col>
       <el-col :span="6">
         <div class="grid-content ">
           <el-select v-model="value" placeholder="请选择" @change="setCurrent">
@@ -88,3 +91,27 @@ export default {
   }
 }
 </script>
+<style scoped>
+.el-col {
+  border-radius: 4px;
+}
+.bg-purple-dark {
+  background: #99a9bf;
+}
+.bg-purple {
+  background: #d3dce6;
+}
+.bg-purple-light {
+  background: #e5e9f2;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+  text-align: center;
+  line-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
+</style>
