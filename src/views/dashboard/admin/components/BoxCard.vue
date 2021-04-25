@@ -13,11 +13,11 @@
 <!--      <mallki class-name="mallki-text" text="vue-element-admin" />-->
       <div style="padding-top:15px;" class="progress-item">
         <span>总任务成功率</span>
-        <el-progress :percentage="70" />
+        <el-progress :percentage="86" />
       </div>
       <div style="padding-top:15px;" class="progress-item">
         <span>今日任务成功率</span>
-        <el-progress :percentage="90" />
+        <el-progress :percentage="100" />
       </div>
     </div>
   </el-card>
