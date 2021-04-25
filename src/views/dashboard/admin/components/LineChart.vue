@@ -16,7 +16,7 @@ export default {
     },
     width: {
       type: String,
-      default: '95%'
+      default: '98%'
     },
     height: {
       type: String,
@@ -61,8 +61,18 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ failData, successData, dayList } = {}) {
+    setOptions({ title, legendSus, legendFail, failData, successData, dayList } = {}) {
       this.chart.setOption({
+        title: {
+          text: title,
+          textStyle: {
+            fontFamily: 'Arial',
+            // color: '#0fb677',
+            fontSize: 16,
+            fontStyle: 'normal',
+            fontWeight: 'normal'
+          }
+        },
         xAxis: {
           data: dayList,
           boundaryGap: false,
@@ -90,44 +100,46 @@ export default {
           }
         },
         legend: {
-          data: ['失败', '成功']
+          data: [legendSus, legendFail]
         },
-        series: [{
-          name: '失败', itemStyle: {
-            normal: {
-              color: '#FF005A',
-              lineStyle: {
-                color: '#FF005A',
-                width: 2
-              }
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: failData,
-          animationDuration: 2800,
-          animationEasing: 'cubicInOut'
-        },
-        {
-          name: '成功',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
-            normal: {
-              color: '#3888fa',
-              lineStyle: {
+        series: [
+          {
+            name: legendSus,
+            smooth: true,
+            type: 'line',
+            itemStyle: {
+              normal: {
                 color: '#3888fa',
-                width: 2
-              },
-              areaStyle: {
-                color: '#f3f8ff'
+                lineStyle: {
+                  color: '#3888fa',
+                  width: 2
+                },
+                areaStyle: {
+                  color: '#f3f8ff'
+                }
               }
-            }
+            },
+            data: successData,
+            animationDuration: 2800,
+            animationEasing: 'quadraticOut'
           },
-          data: successData,
-          animationDuration: 2800,
-          animationEasing: 'quadraticOut'
-        }]
+          {
+            name: legendFail, itemStyle: {
+              normal: {
+                color: '#FF005A',
+                lineStyle: {
+                  color: '#FF005A',
+                  width: 2
+                }
+              }
+            },
+            smooth: true,
+            type: 'line',
+            data: failData,
+            animationDuration: 2800,
+            animationEasing: 'cubicInOut'
+          }
+        ]
       })
     }
   }

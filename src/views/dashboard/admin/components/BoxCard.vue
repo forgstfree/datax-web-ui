@@ -11,11 +11,11 @@
         <el-divider></el-divider>
       </el-row>
 <!--      <mallki class-name="mallki-text" text="vue-element-admin" />-->
-      <div style="padding-top:35px;" class="progress-item">
+      <div style="padding-top:15px;" class="progress-item">
         <span>总任务成功率</span>
         <el-progress :percentage="70" />
       </div>
-      <div style="padding-top:35px;" class="progress-item">
+      <div style="padding-top:15px;" class="progress-item">
         <span>今日任务成功率</span>
         <el-progress :percentage="90" />
       </div>
@@ -60,8 +60,8 @@ export default {
 
 <style lang="scss" >
 .box-card-component{
-  margin-top: 20px;
-  height: 483px;
+  margin-top: 2px;
+  height: 420px;
   .el-card__header {
     padding: 0px!important;
   }
@@ -106,7 +106,7 @@ export default {
     }
   }
   .progress-item {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     font-size: 14px;
   }
   @media only screen and (max-width: 1510px){

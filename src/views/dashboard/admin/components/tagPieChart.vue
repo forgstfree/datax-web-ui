@@ -45,7 +45,7 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
-        title: { text: '全库各数据类型占比' },
+        title: { text: '全库数据标注占比' },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -53,24 +53,19 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['mysql', 'oracle', 'postgresql', 'sqlserver', 'hive', 'hbase', 'mongondb', 'clickhouse']
+          data: ['自动标注', '人工较准', '未标注' ]
         },
         series: [
           {
             name: '',
             type: 'pie',
-            roseType: 'radius',
-            radius: [20, 90],
+            // roseType: 'radius',
+            radius: [50, 90],
             center: ['50%', '38%'],
             data: [
-              { value: 320, name: 'mysql' },
-              { value: 240, name: 'oracle' },
-              { value: 200, name: 'mongondb' },
-              { value: 149, name: 'postgresql' },
-              { value: 100, name: 'sqlserver' },
-              { value: 80, name: 'hbase' },
-              { value: 59, name: 'hive' },
-              { value: 90, name: 'clickhouse' }
+              { value: 15077, name: '自动标注' },
+              { value: 6217, name: '人工较准' },
+              { value: 16879, name: '未标注' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600
