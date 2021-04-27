@@ -145,7 +145,7 @@ export default {
       temp: {},
       mySavedModel: '',
       modelName: '',
-      mySavedModelID: 2,
+      mySavedModelID: 7,
       checkedatt: false,
       checkedins: false,
       myDiagram: '',
@@ -190,7 +190,6 @@ export default {
           message: '请正确选择对比条件'
         })
       } else {
-        if (this.mySavedModelID > 8) { this.mySavedModelID = 2 } else { this.mySavedModelID += 1 }
         fetchGojsData(this.mySavedModelID).then((response) => {
           this.mySavedModel = response.data[0].fields.data
           this.myDiagram.model = go.Model.fromJson(this.mySavedModel)
@@ -200,6 +199,7 @@ export default {
             type: 'success',
             duration: 2000 })
         })
+        if (this.mySavedModelID >= 8) { this.mySavedModelID = 7 } else { this.mySavedModelID += 1 }
       }
     },
     showModel() {
